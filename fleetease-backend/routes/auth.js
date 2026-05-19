@@ -24,6 +24,8 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
+  console.log("Login route hit");
+  console.log(req.body);
   const { email, password } = req.body;
   try {
     const r = await pool.query('SELECT * FROM users WHERE email=$1', [email]);
@@ -39,8 +41,9 @@ router.post('/login', async (req, res) => {
       await pool.query('UPDATE users SET agent_code=$1 WHERE user_id=$2', [agentCode, u.user_id]);
     }
     const token = jwt.sign({ user_id: u.user_id, role: u.role, email: u.email, agent_code: agentCode }, process.env.JWT_SECRET || 'changeme', { expiresIn: '1d' });
-    res.json({ token });
-  } catch (e) { res.status(500).json({ error: 'Login failed' }); }
+    const user = { user_id: u.user_id, name: u.name, email: u.email, role: u.role, phone: u.phone };
+    res.status(200).json({ success: true, token, user });
+  } catch (e) { console.error("Login error:", e); res.status(500).json({ error: 'Login failed' }); }
 });
 
 module.exports = router;

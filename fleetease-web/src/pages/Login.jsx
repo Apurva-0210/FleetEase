@@ -12,7 +12,11 @@ export default function Login(){
   const submit=async(e)=>{
     e.preventDefault(); setLoading(true);
     try{
-      const r = await api.post('/auth/login',{ email, password });
+      const payload = { email, password };
+      console.log("Login payload:", payload);
+      console.log("API URL:", process.env.REACT_APP_API_URL);
+      const r = await api.post('/auth/login', payload);
+      console.log("Login response:", r.data);
       localStorage.setItem('token', r.data.token);
       let role = null; try { role = JSON.parse(atob(r.data.token.split('.')[1]))?.role || null; } catch{}
       if (role==='admin') nav('/admin/dashboard');
@@ -22,7 +26,7 @@ export default function Login(){
       else if (role==='company_admin') nav('/company/charter');
       else if (role==='customer') nav('/my-bookings');
       else nav('/');
-    }catch(err){ alert('Login failed'); }
+    }catch(err){ console.error("Login error:", err); alert('Login failed'); }
     finally{ setLoading(false); }
   };
 
