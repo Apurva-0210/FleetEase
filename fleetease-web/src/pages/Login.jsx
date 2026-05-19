@@ -14,7 +14,7 @@ export default function Login(){
     try{
       const payload = { email, password };
       console.log("Login payload:", payload);
-      console.log("API URL:", process.env.REACT_APP_API_URL);
+      console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
       const r = await api.post('/auth/login', payload);
       console.log("Login response:", r.data);
       localStorage.setItem('token', r.data.token);
