@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const { isCelebrate } = require('celebrate');
+const { isCelebrateError } = require('celebrate');
 
 class AppError extends Error {
   constructor(message, statusCode) {
@@ -106,7 +106,7 @@ module.exports = (err, req, res, next) => {
       error = handleValidationError(error);
     if (error.name === 'JsonWebTokenError') error = handleJWTError();
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
-    if (isCelebrate(error)) {
+    if (isCelebrateError(error)) {
       const errorMessage = [];
       error.details.forEach((validationError) => {
         validationError.details.forEach((detail) => {
