@@ -148,6 +148,7 @@ io.use((socket, next) => {
     next(new Error('Authentication failed'));
   }
 });
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
@@ -222,7 +223,6 @@ setInterval(() => {
 app.use(errorHandler);
 
 // Start server
-const port = process.env.PORT || 5000;
 const env = process.env.NODE_ENV || 'development';
 
 server.listen(port, () => {
