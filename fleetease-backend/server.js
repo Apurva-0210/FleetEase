@@ -148,7 +148,9 @@ io.use((socket, next) => {
     next(new Error('Authentication failed'));
   }
 });
-
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
+});
 // Track active connections
 const activeConnections = new Map();
 
