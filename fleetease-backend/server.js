@@ -148,9 +148,9 @@ io.use((socket, next) => {
     next(new Error('Authentication failed'));
   }
 });
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`);
+const port = process.env.port || 5000;
+server.listen(port, () => {
+  console.log(`Server running on ${port}`);
 });
 // Track active connections
 const activeConnections = new Map();
