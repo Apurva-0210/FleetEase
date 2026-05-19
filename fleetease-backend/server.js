@@ -47,10 +47,12 @@ app.use(helmet());
 
 // Enable CORS
 app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: true,
+  credentials: true,
 }));
+
+app.options('*', cors());
+
 // Limit requests from same API
 const limiter = rateLimit({
   max: 1000, // 1000 requests
@@ -89,12 +91,11 @@ app.use((req, res, next) => {
 
 // Create HTTP server and Socket.IO
 const server = http.createServer(app);
-const io = new Server(server, { 
-  cors: { 
-    origin: process.env.CORS_ORIGIN || '*',
-    methods: ['GET', 'POST'],
-    credentials: true
-  } 
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
 });
 app.set('io', io);
 
@@ -221,11 +222,10 @@ app.use(errorHandler);
 
 // Start server
 const PORT = process.env.PORT || 5000;
-const env = process.env.NODE_ENV || 'development';
 
 server.listen(PORT, () => {
-  console.log(`🚀 Server running in ${env} mode on port ${PORT}`);
-  console.log(`🌐 API available`);
+  console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  console.log('🌐 API available');
 });
 
 // Handle unhandled promise rejections
