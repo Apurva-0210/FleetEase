@@ -46,11 +46,13 @@ const app = express();
 app.use(helmet());
 
 // Enable CORS
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
-  credentials: true
-}));
+const cors = require('cors');
 
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 // Limit requests from same API
 const limiter = rateLimit({
   max: 1000, // 1000 requests
