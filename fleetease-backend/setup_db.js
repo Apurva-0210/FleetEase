@@ -1,7 +1,8 @@
 const pool = require('./db');
 const bcrypt = require('bcrypt');
 const { listFixedRoutes } = require('./utils/routeFares');
-
+const capitalize = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1);
 async function setup() {
   try {
     console.log('🚀 Starting database setup...');
@@ -204,6 +205,8 @@ async function setup() {
       ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('admin','customer','driver','company_admin','agent','manager'));
     END $$;`);
     console.log('✅ Tables created or verified.');
+
+
 
     // ---------------------- SEED USERS ----------------------
     const users = [
