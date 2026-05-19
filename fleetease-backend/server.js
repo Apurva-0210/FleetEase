@@ -148,10 +148,7 @@ io.use((socket, next) => {
     next(new Error('Authentication failed'));
   }
 });
-const port = process.env.port || 5000;
-server.listen(port, () => {
-  console.log(`Server running on ${port}`);
-});
+
 // Track active connections
 const activeConnections = new Map();
 
@@ -223,11 +220,12 @@ setInterval(() => {
 app.use(errorHandler);
 
 // Start server
+const PORT = process.env.PORT || 5000;
 const env = process.env.NODE_ENV || 'development';
 
-server.listen(port, () => {
-  console.log(`🚀 Server running in ${env} mode on port ${port}`);
-  console.log(`🌐 API available at http://localhost:${port}/api/v1`);
+server.listen(PORT, () => {
+  console.log(`🚀 Server running in ${env} mode on port ${PORT}`);
+  console.log(`🌐 API available`);
 });
 
 // Handle unhandled promise rejections
