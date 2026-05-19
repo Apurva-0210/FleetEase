@@ -1,0 +1,10 @@
+:root{--primary:#0d47a1;--primary-2:#1976d2;--accent:#3b82f6}
+body{font-family:'Inter',system-ui,Segoe UI,Arial,sans-serif;background:#f5f8ff;line-height:1.5}
+.h1,.h2,.h3,h1,h2,h3{font-family:'Poppins','Inter',system-ui,Segoe UI,Arial,sans-serif;letter-spacing:.2px}
+h1,.display-6{font-weight:700}
+h2{font-weight:600}
+h3{font-weight:600}
+.navbar{background:var(--primary)}
+.btn-accent{background:var(--accent);color:#fff}
+.hero{background:linear-gradient(135deg,#0d47a1,#1976d2);color:#fff;padding:60px 0}
+.card{box-shadow:0 6px 18px rgba(0,0,0,.06)}

@@ -1,0 +1,8 @@
+/* Basic theme placeholder to satisfy index.js import.
+ * Add your real design system / variables here if needed.
+ */
+
+:root {
+  --fleetease-primary: #0d6efd;
+  --fleetease-accent: #0d6efd;
+}

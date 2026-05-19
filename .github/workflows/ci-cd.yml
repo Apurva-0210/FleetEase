@@ -1,0 +1,93 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+    
+    - name: Install Dependencies
+      run: npm ci
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb
+        JWT_SECRET: test-secret
+        NODE_ENV: test
+    
+    - name: Run Linter
+      run: npx eslint .
+    
+    - name: Run Tests
+      run: npm test -- --coverage
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb
+        JWT_SECRET: test-secret
+        NODE_ENV: test
+    
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage/lcov.info
+        fail_ci_if_error: false
+
+  deploy:
+    name: Deploy to Production
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+    
+    - name: Install Dependencies
+      run: npm ci --production
+      env:
+        NODE_ENV: production
+    
+    - name: Deploy to Production
+      run: |
+        # Add your deployment commands here
+        # For example, using SSH:
+        # ssh user@server 'cd /path/to/app && git pull && npm install --production && pm2 restart app'
+        echo "Deployment would happen here"
+      env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        HOST: ${{ secrets.HOST }}
+        USER: ${{ secrets.USER }}
+        PORT: ${{ secrets.PORT }}

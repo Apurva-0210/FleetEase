@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./fleetease-backend
+      dockerfile: Dockerfile
+    container_name: fleetease-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_NAME=fleetease
+      - JWT_SECRET=your-secret-key-here
+      - CORS_ORIGIN=http://localhost:3000
+    depends_on:
+      - db
+    networks:
+      - fleetease-network
+
+  frontend:
+    build:
+      context: ./fleetease-web
+      dockerfile: Dockerfile
+    container_name: fleetease-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000/api
+      - REACT_APP_SOCKET_URL=http://localhost:5000
+    depends_on:
+      - backend
+    networks:
+      - fleetease-network
+
+  db:
+    image: postgres:13
+    container_name: fleetease-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fleetease
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fleetease-network
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@fleetease.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - fleetease-network
+
+networks:
+  fleetease-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
