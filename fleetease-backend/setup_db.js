@@ -196,6 +196,26 @@ async function setup() {
         billed_at TIMESTAMP NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+
+      CREATE TABLE IF NOT EXISTS agents (
+        agent_user_id INT PRIMARY KEY REFERENCES users(user_id) ON DELETE CASCADE,
+        agent_code TEXT UNIQUE,
+        commission_rate NUMERIC DEFAULT 0.05,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS offline_bookings (
+        id SERIAL PRIMARY KEY,
+        agent_user_id INT REFERENCES users(user_id) ON DELETE SET NULL,
+        customer_name TEXT,
+        customer_phone TEXT,
+        route_id INT,
+        schedule_id INT,
+        seats TEXT,
+        amount NUMERIC,
+        payment_method VARCHAR(10) DEFAULT 'cash',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
     `);
     // Ensure users role check allows 'agent'
     await pool.query(`DO $$ BEGIN
@@ -230,6 +250,38 @@ async function setup() {
       }
     }
     console.log('✅ User seeding completed.');
+
+    // ---------------------- SEED TESTIMONIALS ----------------------
+    await pool.query(`CREATE TABLE IF NOT EXISTS testimonials (
+      id SERIAL PRIMARY KEY,
+      name TEXT,
+      rating INT CHECK (rating BETWEEN 1 AND 5),
+      comment TEXT,
+      bus_condition INT,
+      cleanliness INT,
+      driver_behaviour INT,
+      punctuality INT,
+      comfort INT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`);
+    const reviews = [
+      ['Ravi Kumar', 5, 'Very comfortable journey from Patna to Purnea. Driver was polite and bus was on time.', 5, 5, 5, 5, 5],
+      ['Priya Sharma', 4, 'Clean bus and smooth ride. Booking online was easy.', 4, 5, 4, 4, 4],
+      ['Amit Singh', 5, 'Best fleet service in Bihar. Will book again.', 5, 4, 5, 5, 5],
+    ];
+    let addedReviews = 0;
+    for (const [name, rating, comment, bus, clean, driver, punctual, comfort] of reviews) {
+      const exists = await pool.query('SELECT 1 FROM testimonials WHERE name=$1', [name]);
+      if (!exists.rows.length) {
+        await pool.query(
+          `INSERT INTO testimonials (name, rating, comment, bus_condition, cleanliness, driver_behaviour, punctuality, comfort)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+          [name, rating, comment, bus, clean, driver, punctual, comfort]
+        );
+        addedReviews += 1;
+      }
+    }
+    if (addedReviews) console.log(`⭐ Seeded ${addedReviews} testimonials.`);
 
     // ---------------------- SEED VEHICLES ----------------------
     const v = await pool.query('SELECT 1 FROM vehicles');

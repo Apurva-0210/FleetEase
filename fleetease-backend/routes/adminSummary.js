@@ -1,19 +1,9 @@
 const pool = require('../db');
+const { ensureAgentTables } = require('../utils/ensureAgentTables');
+
 module.exports = async (req, res) => {
   try {
-    // Ensure required tables exist (especially offline_bookings) to avoid errors on fresh DBs
-    await pool.query(`CREATE TABLE IF NOT EXISTS offline_bookings (
-      id SERIAL PRIMARY KEY,
-      agent_user_id INT,
-      customer_name TEXT,
-      customer_phone TEXT,
-      route_id INT,
-      schedule_id INT,
-      seats TEXT,
-      amount NUMERIC,
-      payment_method VARCHAR(10),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`);
+    await ensureAgentTables();
     const { start, end, vehicle_id } = req.query || {};
     const payWhere = [];
     const payArgs = [];

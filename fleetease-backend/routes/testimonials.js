@@ -25,10 +25,7 @@ router.get('/', async (_req, res) => {
     await pool.query('ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS punctuality INT');
     await pool.query('ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS comfort INT');
     const result = await pool.query('SELECT * FROM testimonials ORDER BY id DESC');
-    res.json({
-      success: true,
-      data: result.rows
-    });
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({
       success: false,

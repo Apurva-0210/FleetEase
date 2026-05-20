@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
 module.exports = router;
 
 // Current user profile
-router.get('/me', auth(['admin','customer','driver','company_admin','agent']), async (req, res) => {
+router.get('/me', auth(['admin','customer','driver','company_admin','agent','manager']), async (req, res) => {
   try{
     // Allow all roles to view own profile, including agent
     const r = await pool.query('SELECT user_id, name, email, phone, role, points, created_at, agent_code FROM users WHERE user_id=$1', [req.user.user_id]);

@@ -12,6 +12,7 @@ const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const { parseCorsOrigins, isOriginAllowed } = require('./utils/corsOrigins');
+const { ensureAgentTables } = require('./utils/ensureAgentTables');
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -22,7 +23,9 @@ const paymentRoutes = require('./routes/payments');
 const invoiceRoutes = require('./routes/invoices');
 const contactRoutes = require('./routes/contact');
 const usersRoutes = require('./routes/users');
-const corpBookingsRoutes = require('./routes/corpBookings');
+const corpBookingsRoutes = require('./routes/corp');
+const adminOfflineList = require('./routes/adminOffline');
+const { cancelOffline } = require('./routes/adminOfflineActions');
 const vehiclesRoutes = require('./routes/vehicles');
 const managerRoutes = require('./routes/manager');
 const agentRoutes = require('./routes/agent');
@@ -152,6 +155,8 @@ app.use('/api/v1/manager', managerRoutes);
 app.use('/api/v1/agent', agentRoutes);
 app.get('/api/v1/seats/:schedule_id', adminSeatsHandler);
 app.get('/api/v1/admin/summary', auth(['admin']), adminSummary);
+app.get('/api/v1/admin/offline-bookings', auth(['admin']), adminOfflineList);
+app.post('/api/v1/admin/offline-bookings/:id/cancel', auth(['admin']), cancelOffline);
 
 // Handle unhandled routes
 app.all('*', (req, res, next) => {
@@ -246,9 +251,15 @@ app.use(errorHandler);
 // Start server
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
   console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
   console.log('🌐 API available');
+  try {
+    await ensureAgentTables();
+    console.log('✅ Agent/offline booking tables verified');
+  } catch (err) {
+    console.error('⚠️ Table setup warning:', err.message);
+  }
 });
 
 // Handle unhandled promise rejections
