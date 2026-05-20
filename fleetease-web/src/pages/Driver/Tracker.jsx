@@ -6,6 +6,7 @@ import { Loader2, MapPin, Clock, Users, ArrowLeft, AlertTriangle } from 'lucide-
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import api from '../../utils/api';
+import { SOCKET_URL } from '../../config/env';
 import { toast } from 'react-hot-toast';
 
 // Fix for default marker icons in Leaflet
@@ -60,7 +61,7 @@ const LiveTracker = () => {
     fetchTripDetails();
 
     // Initialize WebSocket connection
-    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000');
+    const newSocket = io(SOCKET_URL);
     setSocket(newSocket);
 
     // Set up event listeners

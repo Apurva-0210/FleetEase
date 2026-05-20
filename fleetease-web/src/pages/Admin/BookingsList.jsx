@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
+import { API_URL } from '../../config/env';
 
 export default function BookingsList(){
   const [items, setItems] = React.useState([]);
@@ -202,8 +203,8 @@ export default function BookingsList(){
                 <td>
                   {b._type==='online' ? (
                     <>
-                      <a className="btn btn-outline-secondary btn-sm me-2" href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/invoices/${b.booking_id}`} target="_blank" rel="noreferrer">JSON</a>
-                      <a className="btn btn-accent btn-sm" href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/invoices/${b.booking_id}/pdf`} target="_blank" rel="noreferrer">PDF</a>
+                      <a className="btn btn-outline-secondary btn-sm me-2" href={`${API_URL}/invoices/${b.booking_id}`} target="_blank" rel="noreferrer">JSON</a>
+                      <a className="btn btn-accent btn-sm" href={`${API_URL}/invoices/${b.booking_id}/pdf`} target="_blank" rel="noreferrer">PDF</a>
                     </>
                   ) : (
                     <span className="text-muted small">—</span>

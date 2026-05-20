@@ -21,7 +21,7 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=fleetease
 JWT_SECRET=change_this_secret
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=http://localhost:3000,https://your-app.vercel.app
 RAZORPAY_KEY_ID=
 RAZORPAY_KEY_SECRET=
 GOOGLE_MAPS_API_KEY=
@@ -35,7 +35,7 @@ npm run setup-db
 ```
 npm run dev
 ```
-- API: http://localhost:5000/api
+- API: http://localhost:5000/api/v1
 - Health: /api/health
 
 ## 3) Frontend
@@ -43,8 +43,9 @@ Path: fleetease-web
 
 1. Create .env (or copy .env.example):
 ```
-REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_API_URL=http://localhost:5000/api/v1
 REACT_APP_SOCKET_URL=http://localhost:5000
+REACT_APP_GOOGLE_MAPS_API_KEY=
 REACT_APP_RAZORPAY_KEY_ID=
 ```
 2. Install and start:
@@ -68,6 +69,24 @@ node demo_tools/gps_demo_run.js
 ```
 - Config: demo_tools/gps_demo_config.json
 - Frontend admin/fleet and detail pages can reflect live data.
+
+## Deploy (Vercel + Render)
+
+### Backend on Render
+1. Root directory: `fleetease-backend`
+2. Build: `npm install` · Start: `npm start`
+3. Environment:
+   - `DATABASE_URL` — from Render Postgres (or keep `DB_*` for local)
+   - `JWT_SECRET` — strong random string
+   - `CORS_ORIGIN` — `https://YOUR-APP.vercel.app` (comma-separate multiple origins)
+   - `NODE_ENV=production`
+
+### Frontend on Vercel
+1. Root directory: `fleetease-web`
+2. Environment variables (must use `REACT_APP_` prefix):
+   - `REACT_APP_API_URL` = `https://YOUR-SERVICE.onrender.com/api/v1`
+   - `REACT_APP_SOCKET_URL` = `https://YOUR-SERVICE.onrender.com`
+3. Redeploy after changing env vars (CRA bakes them in at build time).
 
 ## Notes
 - Adjust ports if occupied.

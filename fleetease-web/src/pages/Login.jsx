@@ -13,8 +13,6 @@ export default function Login(){
     e.preventDefault(); setLoading(true);
     try{
       const payload = { email, password };
-      console.log("Login payload:", payload);
-      console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
       const r = await api.post('/auth/login', payload, {
         headers: {
           'Content-Type': 'application/json'
@@ -30,7 +28,7 @@ export default function Login(){
       else if (role==='company_admin') nav('/company/charter');
       else if (role==='customer') nav('/my-bookings');
       else nav('/');
-    }catch(err){ console.error("Login error:", err); console.error("Error response:", err.response?.data); alert('Login failed'); }
+    }catch(err){ alert(err?.response?.data?.message || 'Login failed'); }
     finally{ setLoading(false); }
   };
 

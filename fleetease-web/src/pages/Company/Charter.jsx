@@ -1,5 +1,6 @@
 import React from 'react';
 import api from '../../utils/api';
+import { GOOGLE_MAPS_API_KEY } from '../../config/env';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '../../components/Toast';
 
@@ -21,7 +22,7 @@ export default function CompanyCharter(){
   // Load Google Maps JS API with Places if key provided
   React.useEffect(()=>{
     if (window.google && window.google.maps && window.google.maps.places){ mapsReadyRef.current = true; setMapsReady(true); return; }
-    const key = process.env.REACT_APP_GMAPS_API_KEY;
+    const key = GOOGLE_MAPS_API_KEY;
     if (!key) return; // no key => graceful fallback
     const id = 'gmaps-js';
     if (document.getElementById(id)) return;

@@ -11,6 +11,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const { parseCorsOrigins, isOriginAllowed } = require('./utils/corsOrigins');
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -40,25 +41,20 @@ const auth = require('./middleware/auth');
 // Create Express app
 const app = express();
 
-// Trust proxy disabled for local/dev to avoid express-rate-limit warnings
+// Required on Render/Heroku so rate-limit and secure cookies work behind a proxy
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
 
 // Set security HTTP headers
 app.use(helmet());
 
-// Enable CORS
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://fleetease-49cv48r59-apurva-kumar-s-projects.vercel.app'
-];
+// Enable CORS (localhost, Vercel previews, and CORS_ORIGIN from env)
+const allowedOrigins = parseCorsOrigins();
 
 const corsOptions = {
   origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-
-    if (
-      allowedOrigins.includes(origin) ||
-      origin.includes('vercel.app')
-    ) {
+    if (isOriginAllowed(origin, allowedOrigins)) {
       callback(null, true);
     } else {
       callback(new Error('CORS blocked'));
@@ -114,12 +110,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: function(origin, callback) {
-      if (!origin) return callback(null, true);
-
-      if (
-        allowedOrigins.includes(origin) ||
-        origin.includes('vercel.app')
-      ) {
+      if (isOriginAllowed(origin, allowedOrigins)) {
         callback(null, true);
       } else {
         callback(new Error('CORS not allowed'));

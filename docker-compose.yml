@@ -18,7 +18,7 @@ services:
       - DB_PASS=postgres
       - DB_NAME=fleetease
       - JWT_SECRET=your-secret-key-here
-      - CORS_ORIGIN=http://localhost:3000
+      - CORS_ORIGIN=http://localhost:3000,http://127.0.0.1:3000
     depends_on:
       - db
     networks:
@@ -33,7 +33,7 @@ services:
     ports:
       - "3000:80"
     environment:
-      - REACT_APP_API_URL=http://localhost:5000/api
+      - REACT_APP_API_URL=http://localhost:5000/api/v1
       - REACT_APP_SOCKET_URL=http://localhost:5000
     depends_on:
       - backend

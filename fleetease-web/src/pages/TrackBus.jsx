@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { Loader2, Search, MapPin, Clock, Bus as BusIcon, ArrowLeft } from 'lucide-react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import { SOCKET_URL } from '../config/env';
 import api from '../utils/api';
 import { toast } from 'react-hot-toast';
 
@@ -102,7 +103,7 @@ const TrackBus = () => {
     fetchTripDetails();
 
     // Initialize WebSocket connection
-    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000');
+    const newSocket = io(SOCKET_URL);
     setSocket(newSocket);
 
     // Set up event listeners

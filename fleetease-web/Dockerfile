@@ -12,6 +12,12 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Build-time API URLs (override in docker-compose for production)
+ARG REACT_APP_API_URL=http://localhost:5000/api/v1
+ARG REACT_APP_SOCKET_URL=http://localhost:5000
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ENV REACT_APP_SOCKET_URL=$REACT_APP_SOCKET_URL
+
 # Build the React application
 RUN npm run build
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../utils/api';
 import { socket } from '../utils/socket';
+import { API_URL } from '../config/env';
 
 export default function BookingDetails(){
   const { id } = useParams();
@@ -136,8 +137,8 @@ export default function BookingDetails(){
           </div>
         </div>
       )}
-      <a className="btn btn-outline-secondary me-2" href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/invoices/${id}`} target="_blank" rel="noreferrer">View Invoice JSON</a>
-      <a className="btn btn-accent" href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/invoices/${id}/pdf`} target="_blank" rel="noreferrer">Download Invoice PDF</a>
+      <a className="btn btn-outline-secondary me-2" href={`${API_URL}/invoices/${id}`} target="_blank" rel="noreferrer">View Invoice JSON</a>
+      <a className="btn btn-accent" href={`${API_URL}/invoices/${id}/pdf`} target="_blank" rel="noreferrer">Download Invoice PDF</a>
     </div>
   );
 }
