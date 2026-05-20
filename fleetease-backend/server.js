@@ -48,7 +48,7 @@ app.use(helmet());
 // Enable CORS
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://fleetease-nu.vercel.app'
+  'https://fleetease-49cv48r59-apurva-kumar-s-projects.vercel.app'
 ];
 
 const corsOptions = {
@@ -61,12 +61,12 @@ const corsOptions = {
     ) {
       callback(null, true);
     } else {
-      callback(new Error('CORS not allowed'));
+      callback(new Error('CORS blocked'));
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
 };
 
 app.use(cors(corsOptions));

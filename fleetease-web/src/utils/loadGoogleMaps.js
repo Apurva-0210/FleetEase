@@ -1,5 +1,11 @@
  export const loadGoogleMaps = (apiKey) => {
    return new Promise((resolve) => {
+     if (!apiKey) {
+       console.warn('Google Maps API key missing');
+       resolve(null);
+       return;
+     }
+
      if (window.google && window.google.maps) {
        resolve(window.google.maps);
        return;
@@ -22,7 +28,7 @@
 
  // Helper used by pages that just need Places loaded using the env API key
  export const loadGoogleMapsPlaces = async () => {
-   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
    const maps = await loadGoogleMaps(apiKey);
    if (!maps || !(window.google && window.google.maps && window.google.maps.places)) {
      throw new Error('Google Maps Places library not available');

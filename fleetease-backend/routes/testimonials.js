@@ -24,10 +24,16 @@ router.get('/', async (_req, res) => {
     await pool.query('ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS driver_behaviour INT');
     await pool.query('ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS punctuality INT');
     await pool.query('ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS comfort INT');
-    const r = await pool.query('SELECT * FROM testimonials ORDER BY created_at DESC');
-    res.json(r.rows);
-  } catch (e) {
-    res.status(500).json({ error: 'Failed to list testimonials', details: e.message });
+    const result = await pool.query('SELECT * FROM testimonials ORDER BY id DESC');
+    res.json({
+      success: true,
+      data: result.rows
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
   }
 });
 

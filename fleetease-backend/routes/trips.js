@@ -6,18 +6,29 @@ router.get('/', async (req, res) => {
   try {
     const { source, destination } = req.query;
     if (source || destination) {
-      const r = await pool.query(
+      const result = await pool.query(
         `SELECT * FROM routes
          WHERE ($1::text IS NULL OR LOWER(source) LIKE LOWER('%' || $1 || '%'))
            AND ($2::text IS NULL OR LOWER(destination) LIKE LOWER('%' || $2 || '%'))
          ORDER BY route_id`,
         [source || null, destination || null]
       );
-      return res.json(r.rows);
+      return res.json({
+        success: true,
+        data: result.rows
+      });
     }
-    const r = await pool.query('SELECT * FROM routes ORDER BY route_id');
-    res.json(r.rows);
-  } catch (e) { res.status(500).json({ error: 'Failed to list routes', details: e.message }); }
+    const result = await pool.query('SELECT * FROM routes ORDER BY route_id');
+    res.json({
+      success: true,
+      data: result.rows
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
 });
 
 // Distinct route sources and destinations for dropdowns
