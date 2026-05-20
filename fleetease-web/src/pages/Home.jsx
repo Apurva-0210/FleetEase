@@ -45,7 +45,7 @@ export default function Home(){
       if (role==='customer') { nav('/my-bookings', { replace: true }); return; }
     }
     api.get('/testimonials').then(r=> {
-      const list = Array.isArray(r.data) ? r.data : [];
+      const list = Array.isArray(r.data) ? r.data : (Array.isArray(r.data?.data) ? r.data.data : []);
       setLatest(list.slice(0, 3));
     }).catch(()=> setLatest([]));
     // Load routes to populate dropdowns

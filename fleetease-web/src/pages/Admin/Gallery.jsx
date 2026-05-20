@@ -3,13 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import useRouteRefresh from '../../hooks/useRouteRefresh';
 import { toast } from '../../components/Toast';
-
-function imageSrc(file) {
-  if (!file?.url) return '';
-  if (file.url.startsWith('http') || file.url.startsWith('/assets/')) return file.url;
-  const base = (process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1').replace(/\/api\/v1\/?$/, '');
-  return `${base}${file.url.startsWith('/') ? file.url : `/${file.url}`}`;
-}
+import { resolveMediaUrl } from '../../utils/mediaUrl';
 
 export default function AdminGallery() {
   const nav = useNavigate();
@@ -180,7 +174,7 @@ export default function AdminGallery() {
                 <div className="card h-100 shadow-sm overflow-hidden">
                   <div style={{ height: 160, background: '#f1f5f9' }}>
                     <img
-                      src={imageSrc(f)}
+                      src={resolveMediaUrl(f)}
                       alt={f.title || f.name}
                       className="w-100 h-100"
                       style={{ objectFit: 'cover' }}

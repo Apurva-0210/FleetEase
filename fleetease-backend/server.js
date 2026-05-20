@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const { parseCorsOrigins, isOriginAllowed } = require('./utils/corsOrigins');
 const { ensureAgentTables } = require('./utils/ensureAgentTables');
+const { runStartupSeed } = require('./utils/startupSeed');
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -258,9 +259,10 @@ server.listen(PORT, async () => {
   console.log('🌐 API available');
   try {
     await ensureAgentTables();
-    console.log('✅ Agent/offline booking tables verified');
+    await runStartupSeed();
+    console.log('✅ Agent tables, reviews, and gallery manifest verified');
   } catch (err) {
-    console.error('⚠️ Table setup warning:', err.message);
+    console.error('⚠️ Startup seed warning:', err.message);
   }
 });
 

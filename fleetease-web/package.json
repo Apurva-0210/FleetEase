@@ -27,6 +27,7 @@
     "socket.io-client": "^4.7.5",
     "tailwind-merge": "^3.4.0"
   },
+  "proxy": "http://localhost:5000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"

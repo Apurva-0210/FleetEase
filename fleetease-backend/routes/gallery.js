@@ -35,10 +35,14 @@ function writeManifest(files) {
 }
 
 function withUrls(files) {
-  return files.map((f) => ({
-    ...f,
-    url: f.url || (f.source === 'assets' ? `/assets/${f.name}` : `/gallery/${f.name}`),
-  }));
+  return files.map((f) => {
+    const preset = DEFAULT_GALLERY_FILES.find((d) => d.name === f.name);
+    return {
+      ...f,
+      source: f.source || preset?.source || 'upload',
+      url: preset?.url || f.url || (f.source === 'assets' ? `/assets/${f.name}` : `/gallery/${f.name}`),
+    };
+  });
 }
 
 function mergeDefaultAssets(existing) {

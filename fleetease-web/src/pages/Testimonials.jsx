@@ -33,7 +33,10 @@ export default function Testimonials(){
   const token = localStorage.getItem('token');
   let role=null; if (token){ try { role = JSON.parse(atob(token.split('.')[1]))?.role || null; } catch(_){} }
 
-  const load=()=> api.get('/testimonials').then(r=>setItems(r.data)).catch(()=>setItems([]));
+  const load=()=> api.get('/testimonials').then(r=>{
+    const list = Array.isArray(r.data) ? r.data : (Array.isArray(r.data?.data) ? r.data.data : []);
+    setItems(list);
+  }).catch(()=>setItems([]));
   useEffect(()=>{ load(); },[]);
 
   const submit=async(e)=>{
