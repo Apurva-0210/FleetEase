@@ -52,6 +52,7 @@ import CompanyRequests from './pages/Company/CharterRequests';
 // Customer Pages
 import Bookings from './pages/customer/Bookings';
 import TrackBus from './pages/TrackBus';
+import Profile from './pages/Profile';
 
 export default function App() {
   const location = useLocation();
@@ -213,6 +214,11 @@ export default function App() {
             </ProtectedRoute>
           } />
           <Route path="/track-bus" element={<TrackBus />} />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
 
           {/* 404 - Not Found */}
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -68,6 +68,8 @@ export default function Bills(){
         api.get(`/bills/fuel?${qs.toString()}`), api.get(`/bills/permit?${qs.toString()}`)
       ]);
       setFuel(fb.data||[]); setPermit(pb.data||[]);
+    } catch {
+      setFuel([]); setPermit([]);
     } finally { setLoading(false); }
   };
 
@@ -76,7 +78,7 @@ export default function Bills(){
     let role = null; try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch{}
     if (role !== 'admin') { nav('/'); return; }
     refresh();
-  },[nav, location, start, end]);
+  },[nav, location.pathname, tab, start, end]);
 
   const create = async (type, payload)=>{
     await api.post(`/bills/${type}`, payload);

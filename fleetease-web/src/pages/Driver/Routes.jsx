@@ -16,6 +16,8 @@ export default function DriverRoutes(){
         setLoading(true);
         const r = await api.get('/driver/assignments');
         setRows(r.data||[]);
+      } catch {
+        setRows([]);
       } finally { setLoading(false); }
     })();
   },[nav]);

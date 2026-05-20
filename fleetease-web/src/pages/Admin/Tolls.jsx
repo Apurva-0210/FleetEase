@@ -30,6 +30,8 @@ export default function AdminTolls(){
         setLoading(true);
         const vr = await api.get('/vehicles');
         setVehicles(Array.isArray(vr.data)? vr.data : []);
+      } catch {
+        setVehicles([]);
       } finally { setLoading(false); }
     })();
   },[nav, location]);

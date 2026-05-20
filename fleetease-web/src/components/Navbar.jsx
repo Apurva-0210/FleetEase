@@ -97,7 +97,9 @@ export default function Navbar(){
                   <div className="badge bg-secondary mt-1">{role || me?.role}</div>
                 </div>
                 <div><hr className="dropdown-divider"/></div>
-                <Link className="dropdown-item" to="/profile">Profile</Link>
+                <Link className="dropdown-item" to="/profile" onClick={() => {
+                  document.querySelectorAll('.dropdown-menu.show').forEach((el) => el.classList.remove('show'));
+                }}>Profile</Link>
                 <button className="dropdown-item text-danger" onClick={logout}>Logout</button>
               </div>
             </div>

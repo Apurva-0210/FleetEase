@@ -14,12 +14,11 @@ export default function Login(){
     try{
       const payload = { email, password };
       const r = await api.post('/auth/login', payload, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' }
       });
-      console.log("Login response:", r.data);
-      localStorage.setItem('token', r.data.token);
+      const token = r.data?.token;
+      if (!token) throw new Error('No token received');
+      localStorage.setItem('token', token);
       let role = null; try { role = JSON.parse(atob(r.data.token.split('.')[1]))?.role || null; } catch{}
       if (role==='admin') nav('/admin/dashboard');
       else if (role==='agent') nav('/agent/trips');
@@ -28,7 +27,10 @@ export default function Login(){
       else if (role==='company_admin') nav('/company/charter');
       else if (role==='customer') nav('/my-bookings');
       else nav('/');
-    }catch(err){ alert(err?.response?.data?.message || 'Login failed'); }
+    }catch(err){
+      const msg = err?.response?.data?.error || err?.response?.data?.message || err?.message || 'Login failed';
+      alert(msg);
+    }
     finally{ setLoading(false); }
   };
 

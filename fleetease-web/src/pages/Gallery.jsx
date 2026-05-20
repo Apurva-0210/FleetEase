@@ -10,15 +10,34 @@ export default function Gallery(){
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#888" font-family="Arial, sans-serif" font-size="16">Image not found</text>\
     </svg>`);
   React.useEffect(()=>{
-    const defaults = ['bus1.jpg','bus2.jpg','interior1.jpg','route-map.png'];
+    const defaults = [
+      { name: 'Sameer1.jpg', title: 'Fleet coach exterior', url: '/assets/Sameer1.jpg' },
+      { name: 'Sameer2.jpg', title: 'Sleeper coach interior', url: '/assets/Sameer2.jpg' },
+      { name: 'Sameer3.jpg', title: 'Highway journey', url: '/assets/Sameer3.jpg' },
+      { name: 'Sameer4.jpg', title: 'Comfort seating', url: '/assets/Sameer4.jpg' },
+      { name: 'Sameer5.jpg', title: 'Premium AC fleet', url: '/assets/Sameer5.jpg' },
+      { name: 'Sameer6.jpg', title: 'Night travel service', url: '/assets/Sameer6.jpg' },
+      { name: 'Sameer7.jpg', title: 'Clean and sanitized', url: '/assets/Sameer7.jpg' },
+      { name: 'Sameer8.jpg', title: 'Corporate charter bus', url: '/assets/Sameer8.jpg' },
+      { name: 'sameer9.svg', title: 'Driver cabin', url: '/assets/sameer9.svg' },
+      { name: 'sameer10.svg', title: 'Bus terminal', url: '/assets/sameer10.svg' },
+      { name: 'sameer11.svg', title: 'Onboard amenities', url: '/assets/sameer11.svg' },
+    ];
     api.get('/gallery')
       .then(r=>{
         const arr = Array.isArray(r.data?.files) ? r.data.files : [];
-        if (arr.length===0) setNote('No images configured. Use Admin → Gallery to add images.');
-        const normalized = (arr.length? arr : defaults).map(x=> typeof x === 'string' ? ({ name: x, title: x }) : ({ name: x.name, title: x.title || x.name, description: x.description || '' }));
+        const normalized = (arr.length ? arr : defaults).map(x =>
+          typeof x === 'string'
+            ? ({ name: x, title: x, url: `/assets/${x}` })
+            : ({ name: x.name, title: x.title || x.name, description: x.description || '', url: x.url })
+        );
         setFiles(normalized);
+        if (!arr.length) setNote('');
       })
-      .catch(()=>{ setNote('Failed to load gallery. Showing defaults.'); setFiles(defaults.map(x=>({ name:x, title:x }))); });
+      .catch(()=>{
+        setNote('Showing default gallery images.');
+        setFiles(defaults);
+      });
   },[]);
 
   return (

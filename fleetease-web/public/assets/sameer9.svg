@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#fff3e0"/>
+  <rect x="140" y="120" width="520" height="260" rx="20" fill="#ef6c00"/>
+  <rect x="180" y="160" width="180" height="100" rx="8" fill="#ffe0b2"/>
+  <rect x="400" y="160" width="220" height="180" rx="8" fill="#ffcc80"/>
+  <text x="400" y="90" text-anchor="middle" fill="#e65100" font-family="Arial,sans-serif" font-size="30" font-weight="700">Driver Cabin</text>
+</svg>

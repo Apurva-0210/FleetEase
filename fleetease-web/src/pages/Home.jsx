@@ -44,10 +44,13 @@ export default function Home(){
       if (role==='company_admin') { nav('/company/charter', { replace: true }); return; }
       if (role==='customer') { nav('/my-bookings', { replace: true }); return; }
     }
-    api.get('/testimonials').then(r=> setLatest(r.data.slice(0,3))).catch(()=> setLatest([]));
+    api.get('/testimonials').then(r=> {
+      const list = Array.isArray(r.data) ? r.data : [];
+      setLatest(list.slice(0, 3));
+    }).catch(()=> setLatest([]));
     // Load routes to populate dropdowns
     api.get('/trips')
-      .then(r=> Array.isArray(r.data)? r.data : (r.data.routes||[]))
+      .then(r=> Array.isArray(r.data) ? r.data : [])
       .then(list=>{
         const src = Array.from(new Set(list.map(x=> x.source))).sort();
         const dst = Array.from(new Set(list.map(x=> x.destination))).sort();
@@ -130,7 +133,7 @@ export default function Home(){
                   <img
                     src="/assets/Sameer1.jpg"
                     alt="Fleetease reference"
-                    onError={(e)=>{ e.currentTarget.onerror=null; e.currentTarget.src='/assets/sameer1.png'; }}
+                    onError={(e)=>{ e.currentTarget.onerror=null; e.currentTarget.src='/assets/sameer1.svg'; }}
                     style={{width:'100%', height:'auto', display:'block'}}
                   />
                   <div style={{position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 60%)'}} />

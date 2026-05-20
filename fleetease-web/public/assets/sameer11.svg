@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#f1f8e9"/>
+  <rect x="120" y="150" width="560" height="200" rx="24" fill="#558b2f"/>
+  <path d="M200 280 L280 200 L520 200 L600 280 Z" fill="#aed581"/>
+  <text x="400" y="110" text-anchor="middle" fill="#33691e" font-family="Arial,sans-serif" font-size="30" font-weight="700">Onboard Amenities</text>
+</svg>

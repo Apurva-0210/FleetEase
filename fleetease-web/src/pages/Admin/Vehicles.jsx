@@ -14,6 +14,8 @@ export default function Vehicles(){
     try{
       const [vr, dr] = await Promise.all([ api.get('/vehicles'), api.get('/vehicles/drivers') ]);
       setRows(vr.data||[]); setDrivers(dr.data||[]);
+    } catch {
+      setRows([]); setDrivers([]);
     } finally { setLoading(false); }
   };
 

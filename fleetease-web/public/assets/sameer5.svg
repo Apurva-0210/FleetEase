@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#fce4ec"/>
+  <rect x="90" y="150" width="620" height="220" rx="28" fill="#c2185b"/>
+  <circle cx="200" cy="400" r="45" fill="#333"/><circle cx="600" cy="400" r="45" fill="#333"/>
+  <text x="400" y="100" text-anchor="middle" fill="#880e4f" font-family="Arial,sans-serif" font-size="32" font-weight="700">Premium Fleet</text>
+</svg>

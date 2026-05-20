@@ -35,6 +35,7 @@ const fareRoutes = require('./routes/fare');
 const scheduleRoutes = require('./routes/schedules');
 const billRoutes = require('./routes/bills');
 const adminSummary = require('./routes/adminSummary');
+const galleryRoutes = require('./routes/gallery');
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -153,6 +154,7 @@ app.use('/api/v1/corp-bookings', corpBookingsRoutes);
 app.use('/api/v1/vehicles', vehiclesRoutes);
 app.use('/api/v1/manager', managerRoutes);
 app.use('/api/v1/agent', agentRoutes);
+app.use('/api/v1/gallery', galleryRoutes);
 app.get('/api/v1/seats/:schedule_id', adminSeatsHandler);
 app.get('/api/v1/admin/summary', auth(['admin']), adminSummary);
 app.get('/api/v1/admin/offline-bookings', auth(['admin']), adminOfflineList);

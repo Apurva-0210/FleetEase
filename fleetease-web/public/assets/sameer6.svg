@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#ede7f6"/>
+  <rect x="120" y="190" width="560" height="150" rx="12" fill="#5e35b1"/>
+  <text x="400" y="130" text-anchor="middle" fill="#4527a0" font-family="Arial,sans-serif" font-size="32" font-weight="700">Night Travel</text>
+</svg>

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import { API_URL } from '../../config/env';
+import useRouteRefresh from '../../hooks/useRouteRefresh';
 
 export default function BookingsList(){
   const [items, setItems] = React.useState([]);
@@ -11,14 +12,8 @@ export default function BookingsList(){
   const [schedMap, setSchedMap] = React.useState({});
   const [modal, setModal] = React.useState({ open:false, item:null, working:false, result:null });
   const nav = useNavigate();
-  const location = useLocation();
 
-  React.useEffect(()=>{
-    const t = localStorage.getItem('token');
-    let role = null; try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch{}
-    if (role !== 'admin') { nav('/'); return; }
-
-    const run = async ()=>{
+  const run = React.useCallback(async ()=>{
       try{
         setLoading(true);
         const [onlineRes, offlineRes] = await Promise.all([
@@ -53,10 +48,19 @@ export default function BookingsList(){
           try{ const r = await api.get(`/schedules/${id}`); return [id, r.data]; }catch{ return [id, null]; }
         }));
         setSchedMap(Object.fromEntries(entries));
+      } catch {
+        setItems([]);
+        setSchedMap({});
       } finally { setLoading(false); }
-    };
+  }, []);
+
+  useRouteRefresh(() => {
+    const t = localStorage.getItem('token');
+    let role = null;
+    try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
+    if (role !== 'admin') { nav('/'); return; }
     run();
-  },[nav, location]);
+  }, [run, nav]);
 
   const openCancel = (it)=> setModal({ open:true, item: it, working:false, result:null });
   const doCancel = async()=>{

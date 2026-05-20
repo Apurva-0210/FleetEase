@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
+import useRouteRefresh from '../../hooks/useRouteRefresh';
 
 export default function Dashboard(){
   const [data, setData] = React.useState(null);
@@ -17,22 +18,28 @@ export default function Dashboard(){
   const stackedRef = React.useRef(null);
   const pieRef = React.useRef(null);
 
-  React.useEffect(()=>{
+  const loadSummary = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      const params = { start, end };
+      if (selectedBus) params.vehicle_id = selectedBus;
+      const qs = new URLSearchParams(params);
+      const r = await api.get(`/admin/summary?${qs.toString()}`);
+      setData(r.data || {});
+    } catch {
+      setData({});
+    } finally {
+      setLoading(false);
+    }
+  }, [start, end, selectedBus]);
+
+  useRouteRefresh(() => {
     const t = localStorage.getItem('token');
-    let role = null; try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch{}
+    let role = null;
+    try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
-    const load = async ()=>{
-      try{
-        setLoading(true);
-        const params = { start, end };
-        if (selectedBus) params.vehicle_id = selectedBus;
-        const qs = new URLSearchParams(params);
-        const r = await api.get(`/admin/summary?${qs.toString()}`);
-        setData(r.data || {});
-      } finally { setLoading(false); }
-    };
-    load();
-  },[nav, start, end, selectedBus]);
+    loadSummary();
+  }, [loadSummary, nav]);
 
   React.useEffect(()=>{
     if (window.echarts){ setEchartsReady(true); return; }

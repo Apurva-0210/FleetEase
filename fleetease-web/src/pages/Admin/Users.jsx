@@ -1,11 +1,11 @@
 import React from 'react';
 import api from '../../utils/api';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useRouteRefresh from '../../hooks/useRouteRefresh';
 import { toast } from '../../components/Toast';
 
 export default function AdminUsers(){
   const nav = useNavigate();
-  const location = useLocation();
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [managedOnly, setManagedOnly] = React.useState(true); // show only agent/manager/driver
@@ -16,12 +16,13 @@ export default function AdminUsers(){
     finally{ setLoading(false); }
   };
 
-  React.useEffect(()=>{
+  useRouteRefresh(() => {
     const t = localStorage.getItem('token');
-    let role = null; try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch{}
+    let role = null;
+    try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     refresh();
-  },[nav, location]);
+  }, [nav]);
 
   const updateRole = async(id, role)=>{
     try{ await api.put(`/users/${id}/role`, { role }); toast('Role updated','success'); refresh(); }

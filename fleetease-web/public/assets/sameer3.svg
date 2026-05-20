@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#fff8e1"/>
+  <path d="M120 320 L200 200 L600 200 L680 320 Z" fill="#ff8f00"/>
+  <rect x="220" y="240" width="360" height="60" fill="#ffe082"/>
+  <text x="400" y="120" text-anchor="middle" fill="#e65100" font-family="Arial,sans-serif" font-size="32" font-weight="700">Highway Route</text>
+</svg>

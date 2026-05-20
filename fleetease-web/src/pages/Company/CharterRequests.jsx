@@ -8,7 +8,7 @@ export default function CompanyCharterRequests(){
   const [loading, setLoading] = React.useState(true);
 
   const refresh = async()=>{
-    try{ setLoading(true); const r = await api.get('/corp-bookings/mine'); setRows(Array.isArray(r.data)? r.data : []);} finally{ setLoading(false); }
+    try{ setLoading(true); const r = await api.get('/corp-bookings/mine'); setRows(Array.isArray(r.data)? r.data : []);} catch{ setRows([]); } finally{ setLoading(false); }
   };
 
   React.useEffect(()=>{

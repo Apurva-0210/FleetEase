@@ -15,6 +15,8 @@ export default function Profile(){
         setLoading(true);
         const r = await api.get('/auth/me');
         setMe(r.data||null);
+      } catch {
+        setMe(null);
       } finally { setLoading(false); }
     })();
   },[nav]);
