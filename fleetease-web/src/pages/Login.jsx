@@ -15,7 +15,11 @@ export default function Login(){
       const payload = { email, password };
       console.log("Login payload:", payload);
       console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
-      const r = await api.post('/auth/login', payload);
+      const r = await api.post('/auth/login', payload, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       console.log("Login response:", r.data);
       localStorage.setItem('token', r.data.token);
       let role = null; try { role = JSON.parse(atob(r.data.token.split('.')[1]))?.role || null; } catch{}
@@ -26,7 +30,7 @@ export default function Login(){
       else if (role==='company_admin') nav('/company/charter');
       else if (role==='customer') nav('/my-bookings');
       else nav('/');
-    }catch(err){ console.error("Login error:", err); alert('Login failed'); }
+    }catch(err){ console.error("Login error:", err); console.error("Error response:", err.response?.data); alert('Login failed'); }
     finally{ setLoading(false); }
   };
 

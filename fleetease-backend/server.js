@@ -46,17 +46,32 @@ const app = express();
 app.use(helmet());
 
 // Enable CORS
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://fleetease-nu.vercel.app',
+  'https://fleet-ease-82h2kc1yb-apurva-kumar-s-projects.vercel.app'
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://fleet-ease-82h2kc1yb-apurva-kumar-s-projects.vercel.app'
-  ],
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
 app.options('*', cors());
+
+// Body parser, reading data from body into req.body
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Limit requests from same API
 const limiter = rateLimit({
@@ -66,9 +81,6 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-// Body parser, reading data from body into req.body
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
@@ -98,10 +110,7 @@ app.use((req, res, next) => {
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [
-      'http://localhost:3000',
-      'https://fleet-ease-82h2kc1yb-apurva-kumar-s-projects.vercel.app'
-    ],
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true
   }
