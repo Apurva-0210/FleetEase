@@ -102,7 +102,7 @@ const TrackBus = () => {
     fetchTripDetails();
 
     // Initialize WebSocket connection
-    const newSocket = io(process.env.REACT_APP_API_URL || 'http://localhost:5000');
+    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000');
     setSocket(newSocket);
 
     // Set up event listeners

@@ -202,8 +202,8 @@ export default function BookingsList(){
                 <td>
                   {b._type==='online' ? (
                     <>
-                      <a className="btn btn-outline-secondary btn-sm me-2" href={`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/invoices/${b.booking_id}`} target="_blank" rel="noreferrer">JSON</a>
-                      <a className="btn btn-accent btn-sm" href={`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/invoices/${b.booking_id}/pdf`} target="_blank" rel="noreferrer">PDF</a>
+                      <a className="btn btn-outline-secondary btn-sm me-2" href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/invoices/${b.booking_id}`} target="_blank" rel="noreferrer">JSON</a>
+                      <a className="btn btn-accent btn-sm" href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/invoices/${b.booking_id}/pdf`} target="_blank" rel="noreferrer">PDF</a>
                     </>
                   ) : (
                     <span className="text-muted small">—</span>

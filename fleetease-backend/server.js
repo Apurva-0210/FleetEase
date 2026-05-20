@@ -48,8 +48,8 @@ app.use(helmet());
 // Enable CORS
 app.use(cors({
   origin: [
-    'https://fleet-ease-k3dce8sd4-apurva-kumar-s-projects.vercel.app',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://fleet-ease-82h2kc1yb-apurva-kumar-s-projects.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -99,8 +99,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'https://fleet-ease-k3dce8sd4-apurva-kumar-s-projects.vercel.app',
-      'http://localhost:3000'
+      'http://localhost:3000',
+      'https://fleet-ease-82h2kc1yb-apurva-kumar-s-projects.vercel.app'
     ],
     methods: ['GET', 'POST'],
     credentials: true
