@@ -168,44 +168,38 @@ export default function AdminGallery() {
             </div>
           )}
 
-          <div className="row g-3">
+          <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-2">
             {files.map((f) => (
-              <div className="col-6 col-md-4 col-lg-3" key={f.name}>
-                <div className="card h-100 shadow-sm overflow-hidden">
-                  <div style={{ height: 160, background: '#f1f5f9' }}>
+              <div className="col" key={f.name}>
+                <figure className="gallery-card mb-0 h-100 d-flex flex-column">
+                  <div className="gallery-card-img">
                     <img
                       src={resolveMediaUrl(f)}
                       alt={f.title || f.name}
-                      className="w-100 h-100"
-                      style={{ objectFit: 'cover' }}
-                      onError={(e) => {
-                        e.currentTarget.src = '/assets/Sameer1.jpg';
-                      }}
+                      loading="lazy"
+                      onError={(e) => { e.currentTarget.src = '/assets/Sameer1.jpg'; }}
                     />
                   </div>
-                  <div className="card-body p-2">
-                    <div className="fw-semibold small text-truncate" title={f.title}>{f.title || f.name}</div>
-                    <div className="text-muted small">
-                      {f.source === 'assets' ? 'Built-in asset' : 'Uploaded'}
-                    </div>
-                    <div className="d-flex gap-1 mt-2 flex-wrap">
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-primary"
-                        onClick={() => setEditing({ name: f.name, title: f.title || '', description: f.description || '' })}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => onDelete(f)}
-                      >
-                        Remove
-                      </button>
-                    </div>
+                  <figcaption className="gallery-card-caption px-2 pt-1 pb-0" title={f.title}>
+                    {f.title || f.name}
+                  </figcaption>
+                  <div className="px-2 pb-2 mt-auto d-flex gap-1">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-primary py-0 px-2"
+                      onClick={() => setEditing({ name: f.name, title: f.title || '', description: f.description || '' })}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-danger py-0 px-2"
+                      onClick={() => onDelete(f)}
+                    >
+                      Remove
+                    </button>
                   </div>
-                </div>
+                </figure>
               </div>
             ))}
           </div>
