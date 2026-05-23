@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
 import { toast } from '../../components/Toast';
 
@@ -29,7 +29,7 @@ export default function DriverRoutes(){
         }
       } finally { setLoading(false); }
     })();
-  },[nav]);
+  },[nav, location]);
 
   return (
     <div className="container py-4">

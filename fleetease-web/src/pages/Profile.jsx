@@ -1,9 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../utils/api';
 
 export default function Profile(){
   const nav = useNavigate();
+  const location = useLocation();
   const [me, setMe] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
 
@@ -19,7 +20,7 @@ export default function Profile(){
         setMe(null);
       } finally { setLoading(false); }
     })();
-  },[nav]);
+  },[nav, location]);
 
   if (loading) return <div className="container py-4">Loading profile…</div>;
   if (!me) return <div className="container py-4">No profile</div>;

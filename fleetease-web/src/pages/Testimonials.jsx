@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import api from '../utils/api';
 import { FaStar } from 'react-icons/fa';
 import { toast } from '../components/Toast';
+import { useLocation } from 'react-router-dom';
 
 function StarRate({ value, onChange, size=20 }){
   return (
@@ -22,6 +23,7 @@ function StarRate({ value, onChange, size=20 }){
 }
 
 export default function Testimonials(){
+  const location = useLocation();
   const [items,setItems]=useState([]);
   const [name,setName]=useState('');
   const [rating,setRating]=useState(5);
@@ -38,7 +40,7 @@ export default function Testimonials(){
     const list = Array.isArray(r.data) ? r.data : (Array.isArray(r.data?.data) ? r.data.data : []);
     setItems(list);
   }).catch(()=>setItems([]));
-  useEffect(()=>{ load(); },[]);
+  useEffect(()=>{ load(); },[location]);
 
   const submit=async(e)=>{
     e.preventDefault();
