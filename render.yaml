@@ -35,6 +35,10 @@ services:
         generateValue: true
       - key: CORS_ORIGIN
         value: https://fleetease-e86s.onrender.com,https://fleetease.vercel.app
+    disk:
+      name: gallery-data
+      mountPath: /app/public/gallery
+      sizeGB: 1
 
 databases:
   - name: fleetease-db
