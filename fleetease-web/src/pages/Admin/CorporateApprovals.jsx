@@ -1,11 +1,11 @@
 import React from 'react';
 import api from '../../utils/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from '../../components/Toast';
-import useRouteRefresh from '../../hooks/useRouteRefresh';
 
 export default function AdminCorporateApprovals(){
   const nav = useNavigate();
+  const location = useLocation();
   const [status, setStatus] = React.useState('pending');
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -21,13 +21,13 @@ export default function AdminCorporateApprovals(){
     } finally{ setLoading(false); }
   };
 
-  useRouteRefresh(() => {
+  React.useEffect(() => {
     const t = localStorage.getItem('token');
     let role = null;
     try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     refresh();
-  }, [status, nav]);
+  }, [status, nav, location]);
 
   const approve = async(id, assigned_vehicle_id, admin_notes)=>{
     try{ setModal(m=> ({ ...m, working:true })); await api.put(`/corp-bookings/${id}/approve`, { assigned_vehicle_id, admin_notes }); toast('Approved','success'); setModal({ open:false, item:null, working:false }); refresh(); }

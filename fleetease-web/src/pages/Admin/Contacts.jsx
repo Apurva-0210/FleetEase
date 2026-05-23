@@ -1,10 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import useRouteRefresh from '../../hooks/useRouteRefresh';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
 
 export default function Contacts(){
   const nav = useNavigate();
+  const location = useLocation();
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState('');
@@ -21,13 +21,13 @@ export default function Contacts(){
     }
   };
 
-  useRouteRefresh(() => {
+  React.useEffect(() => {
     const t = localStorage.getItem('token');
     let role = null;
     try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     refresh();
-  }, [nav]);
+  }, [nav, location]);
 
   return (
     <div className="container py-4">

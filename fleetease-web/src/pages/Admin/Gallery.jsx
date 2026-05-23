@@ -1,12 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
-import useRouteRefresh from '../../hooks/useRouteRefresh';
 import { toast } from '../../components/Toast';
 import { resolveMediaUrl } from '../../utils/mediaUrl';
 
 export default function AdminGallery() {
   const nav = useNavigate();
+  const location = useLocation();
   const [files, setFiles] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [uploading, setUploading] = React.useState(false);
@@ -30,13 +30,13 @@ export default function AdminGallery() {
     }
   }, []);
 
-  useRouteRefresh(() => {
+  React.useEffect(() => {
     const t = localStorage.getItem('token');
     let role = null;
     try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     load();
-  }, [load, nav]);
+  }, [load, nav, location]);
 
   const onUpload = async (e) => {
     e.preventDefault();

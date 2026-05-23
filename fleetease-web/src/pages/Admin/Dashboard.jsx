@@ -1,7 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
-import useRouteRefresh from '../../hooks/useRouteRefresh';
 
 export default function Dashboard(){
   const [data, setData] = React.useState(null);
@@ -10,6 +9,7 @@ export default function Dashboard(){
   const [end, setEnd] = React.useState('');
   const [selectedBus, setSelectedBus] = React.useState('');
   const nav = useNavigate();
+  const location = useLocation();
   const onlineRef = React.useRef(null);
   const offlineRef = React.useRef(null);
   const busRef = React.useRef(null);
@@ -33,13 +33,13 @@ export default function Dashboard(){
     }
   }, [start, end, selectedBus]);
 
-  useRouteRefresh(() => {
+  React.useEffect(() => {
     const t = localStorage.getItem('token');
     let role = null;
     try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     loadSummary();
-  }, [loadSummary, nav]);
+  }, [nav, location, loadSummary]);
 
   React.useEffect(()=>{
     if (window.echarts){ setEchartsReady(true); return; }

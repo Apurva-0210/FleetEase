@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
 import { API_URL } from '../../config/env';
-import useRouteRefresh from '../../hooks/useRouteRefresh';
 
 export default function BookingsList(){
   const [items, setItems] = React.useState([]);
@@ -12,6 +11,7 @@ export default function BookingsList(){
   const [schedMap, setSchedMap] = React.useState({});
   const [modal, setModal] = React.useState({ open:false, item:null, working:false, result:null });
   const nav = useNavigate();
+  const location = useLocation();
 
   const run = React.useCallback(async ()=>{
       try{
@@ -54,13 +54,13 @@ export default function BookingsList(){
       } finally { setLoading(false); }
   }, []);
 
-  useRouteRefresh(() => {
+  React.useEffect(() => {
     const t = localStorage.getItem('token');
     let role = null;
     try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     run();
-  }, [run, nav]);
+  }, [nav, location, run]);
 
   const openCancel = (it)=> setModal({ open:true, item: it, working:false, result:null });
   const doCancel = async()=>{
