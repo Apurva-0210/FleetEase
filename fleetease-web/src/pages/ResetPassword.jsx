@@ -1,6 +1,7 @@
 import React from 'react';
 import api from '../utils/api';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { toast } from '../components/Toast';
 
 export default function ResetPassword(){
   const [sp] = useSearchParams();
@@ -13,15 +14,15 @@ export default function ResetPassword(){
 
   const submit = async (e)=>{
     e.preventDefault();
-    if (!token) return alert('Missing token');
-    if (password.length < 6) return alert('Password must be at least 6 characters');
-    if (password !== confirm) return alert('Passwords do not match');
+    if (!token) return toast('Missing token','error');
+    if (password.length < 6) return toast('Password must be at least 6 characters','error');
+    if (password !== confirm) return toast('Passwords do not match','error');
     setLoading(true);
     try{
       const r = await api.post('/auth/reset', { token, password });
       if (r.data?.ok){ setOk(true); setTimeout(()=> nav('/login'), 1500); }
-      else alert('Failed to reset');
-    }catch{ alert('Failed to reset'); }
+      else toast('Failed to reset password','error');
+    }catch{ toast('Failed to reset password','error'); }
     finally{ setLoading(false); }
   };
 

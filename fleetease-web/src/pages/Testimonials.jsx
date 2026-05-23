@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import api from '../utils/api';
 import { FaStar } from 'react-icons/fa';
+import { toast } from '../components/Toast';
 
 function StarRate({ value, onChange, size=20 }){
   return (
@@ -55,12 +56,12 @@ export default function Testimonials(){
       setName(''); setRating(5); setComment('');
       setBusCondition(5); setCleanliness(5); setDriverBehaviour(5); setPunctuality(5); setComfort(5);
       load();
-    }catch(_){ alert('Failed'); }
+    }catch(_){ toast('Failed to submit testimonial','error'); }
   };
 
   const clearAll = async()=>{
     if (!window.confirm('Clear all testimonials?')) return;
-    try{ await api.delete('/testimonials'); load(); } catch{ alert('Failed to clear'); }
+    try{ await api.delete('/testimonials'); load(); toast('Testimonials cleared','success'); } catch{ toast('Failed to clear testimonials','error'); }
   };
 
   const avg = useMemo(()=>{

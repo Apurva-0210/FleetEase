@@ -49,7 +49,7 @@ export default function MyBookings(){
       const mine = (Array.isArray(listRes.data)? listRes.data : []).filter(b=> b.customer_id === me?.user_id);
       setItems(mine);
     }catch{
-      alert('Failed to cancel booking');
+      toast('Failed to cancel booking','error');
       setModal(m=>({ ...m, working:false }));
     }
   };

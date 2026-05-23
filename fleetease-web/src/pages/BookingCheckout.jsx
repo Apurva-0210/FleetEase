@@ -82,7 +82,7 @@ export default function BookingCheckout(){
       // Simulate success immediately in demo mode
       await api.post('/payments/verify', { booking_id, amount: fare, razorpay_order_id:o.data.id, razorpay_payment_id:`pay_${Date.now()}` });
       nav(`/booking/${booking_id}`);
-    }catch(e){ alert('Payment failed'); }
+    }catch(e){ toast('Payment failed','error'); }
     finally{ setLoading(false); }
   };
 

@@ -17,7 +17,6 @@ const Bookings = () => {
         const list = Array.isArray(r.data) ? r.data : [];
         setBookings(list);
       } catch (e) {
-        console.error('Failed to load bookings', e);
         setBookings([]);
       } finally {
         setLoading(false);

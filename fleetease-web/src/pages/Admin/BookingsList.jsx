@@ -96,7 +96,7 @@ export default function BookingsList(){
       const merged = [...onlineWithSeats, ...offlineItems].sort((a,b)=> new Date(b.created_at||0) - new Date(a.created_at||0));
       setItems(merged);
     }catch{
-      alert('Failed to cancel booking');
+      toast('Failed to cancel booking','error');
       setModal(m=> ({ ...m, working:false }));
     }
   };

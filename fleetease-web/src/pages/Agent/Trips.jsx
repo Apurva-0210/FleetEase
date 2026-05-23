@@ -103,8 +103,8 @@ export default function AgentTrips(){
       const seatArr = selected.map(x=>x.trim()).filter(Boolean);
       const takenSet = new Set(taken.map(s=>s.toUpperCase()));
       const conflict = seatArr.find(s=> takenSet.has(s.toUpperCase()));
-      if (!seatArr.length){ alert('Select at least one seat.'); return; }
-      if (conflict){ alert(`Seat ${conflict} is already taken.`); return; }
+      if (!seatArr.length){ toast('Select at least one seat.','error'); return; }
+      if (conflict){ toast(`Seat ${conflict} is already taken.`,'error'); return; }
       const payload = { ...form, seats: seatArr, amount: Number(form.amount) };
       await api.post('/agent/book', payload);
       setReceipt({
@@ -124,7 +124,7 @@ export default function AgentTrips(){
     }catch(err){
       const msg = err?.response?.data?.error || err?.message || 'Failed to create booking';
       const det = err?.response?.data?.details ? `\n${err.response.data.details}` : '';
-      alert(`${msg}${det}`);
+      toast(`${msg}${det}`,'error');
     } finally { setSubmitting(false); }
   };
 

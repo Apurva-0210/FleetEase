@@ -20,8 +20,7 @@ const DriverTrips = () => {
       const response = await api.get('/driver/trips');
       setTrips(response.data);
     } catch (error) {
-      console.error('Error fetching trips:', error);
-      toast.error('Failed to load trips');
+      toast('Failed to load trips','error');
     } finally {
       setLoading(false);
     }
@@ -30,11 +29,10 @@ const DriverTrips = () => {
   const handleStartTrip = async (tripId) => {
     try {
       await api.post(`/trips/${tripId}/start`);
-      toast.success('Trip started successfully');
+      toast('Trip started successfully','success');
       navigate(`/driver/tracker?trip=${tripId}`);
     } catch (error) {
-      console.error('Error starting trip:', error);
-      toast.error(error.response?.data?.message || 'Failed to start trip');
+      toast(error.response?.data?.message || 'Failed to start trip','error');
     }
   };
 

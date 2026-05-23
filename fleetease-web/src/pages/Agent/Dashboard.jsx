@@ -40,7 +40,6 @@ export default function AgentDashboard() {
         const totalAmt = Number(revRes?.data?.total?.amt || 0);
         setRevenue({ today: todayAmt, total: totalAmt });
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
       } finally {
         setLoading(false);
       }
@@ -52,7 +51,6 @@ export default function AgentDashboard() {
   const handleSearch = (e) => {
     e.preventDefault();
     // Implement search functionality
-    console.log('Searching for:', searchQuery);
   };
 
   if (loading) {

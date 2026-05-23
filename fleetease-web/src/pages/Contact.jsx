@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../utils/api';
+import { toast } from '../components/Toast';
 
 export default function Contact(){
   const [name,setName]=useState('');
@@ -7,7 +8,7 @@ export default function Contact(){
   const [phone,setPhone]=useState('');
   const [message,setMessage]=useState('');
   const [ok,setOk]=useState(false);
-  const submit=async(e)=>{ e.preventDefault(); setOk(false); try{ await api.post('/contact',{name,email,phone,message}); setOk(true); setName(''); setEmail(''); setPhone(''); setMessage(''); }catch(_){ alert('Failed'); } };
+  const submit=async(e)=>{ e.preventDefault(); setOk(false); try{ await api.post('/contact',{name,email,phone,message}); setOk(true); setName(''); setEmail(''); setPhone(''); setMessage(''); toast('Message sent successfully','success'); }catch(_){ toast('Failed to send message','error'); } };
   return (
     <div className="container py-4">
       <h3 className="mb-3">Contact Us</h3>

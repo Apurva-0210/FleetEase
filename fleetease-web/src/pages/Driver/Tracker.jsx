@@ -66,7 +66,6 @@ const LiveTracker = () => {
 
     // Set up event listeners
     newSocket.on('connect', () => {
-      console.log('Connected to WebSocket server');
       newSocket.emit('joinTrip', { tripId });
     });
 

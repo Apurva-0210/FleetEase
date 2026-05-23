@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
+import { toast } from '../components/Toast';
 
 export default function Register(){
-  const [name,setName]=useState('Customer One');
-  const [email,setEmail]=useState('cust1@fleetease.com');
-  const [phone,setPhone]=useState('9999990000');
-  const [password,setPassword]=useState('cust123');
+  const [name,setName]=useState('');
+  const [email,setEmail]=useState('');
+  const [phone,setPhone]=useState('');
+  const [password,setPassword]=useState('');
   const [loading,setLoading]=useState(false);
   const nav = useNavigate();
 
@@ -14,9 +15,9 @@ export default function Register(){
     e.preventDefault(); setLoading(true);
     try{
       await api.post('/auth/register',{ name,email,phone,password });
-      alert('Registered! Please login.');
+      toast('Registered! Please login.','success');
       nav('/login');
-    }catch(err){ alert('Registration failed'); }
+    }catch(err){ toast('Registration failed','error'); }
     finally{ setLoading(false); }
   };
 
