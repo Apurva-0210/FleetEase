@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: fleetease-backend
+    env: node
+    plan: free
+    rootDirectory: fleetease-backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DB_HOST
+        fromDatabase:
+          name: fleetease-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: fleetease-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: fleetease-db
+          property: user
+      - key: DB_PASS
+        fromDatabase:
+          name: fleetease-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: fleetease-db
+          property: database
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://fleetease-e86s.onrender.com,https://fleetease.vercel.app
+
+databases:
+  - name: fleetease-db
+    databaseName: fleetease
+    user: fleetease_user
