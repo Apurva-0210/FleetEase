@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Clock as ClockIcon, ArrowRight, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import api from '../../utils/api';
 import { toast } from 'react-hot-toast';
@@ -8,10 +8,11 @@ const DriverTrips = () => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     fetchTrips();
-  }, []);
+  }, [location]);
 
   const fetchTrips = async () => {
     try {

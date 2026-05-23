@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
 
 const Bookings = () => {
@@ -7,6 +7,7 @@ const Bookings = () => {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('upcoming'); // upcoming | past
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const load = async () => {
@@ -23,7 +24,7 @@ const Bookings = () => {
       }
     };
     load();
-  }, []);
+  }, [location]);
 
   if (loading) {
     return <div className="container py-4">Loading bookings...</div>;

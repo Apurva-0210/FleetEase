@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card';
 import { Bus, MapPin, Calendar, Clock } from 'lucide-react';
@@ -9,6 +9,7 @@ export default function DriverDashboard() {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
   const nav = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const t = localStorage.getItem('token');
@@ -29,7 +30,7 @@ export default function DriverDashboard() {
       }
     };
     load();
-  }, [nav]);
+  }, [nav, location]);
 
   const today = new Date();
   today.setHours(0,0,0,0);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
 import SeatMap from '../../components/SeatMap';
 import { socket } from '../../utils/socket';
@@ -9,6 +9,7 @@ export default function DriverSeats(){
   const [loading, setLoading] = React.useState(true);
   const [taken, setTaken] = React.useState([]);
   const nav = useNavigate();
+  const location = useLocation();
   const { schedule_id } = useParams();
 
   React.useEffect(()=>{
@@ -27,7 +28,7 @@ export default function DriverSeats(){
         setTaken(Array.isArray(r2.data)? r2.data : []);
       } finally { setLoading(false); }
     })();
-  },[nav, schedule_id]);
+  },[nav, location, schedule_id]);
 
   // Realtime: join schedule room and refresh seat map on updates
   React.useEffect(()=>{

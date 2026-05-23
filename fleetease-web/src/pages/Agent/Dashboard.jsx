@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import api from '../../utils/api';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card';
@@ -19,6 +19,7 @@ export default function AgentDashboard() {
   const [recentBookings, setRecentBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -46,7 +47,7 @@ export default function AgentDashboard() {
     };
 
     fetchDashboardData();
-  }, []);
+  }, [location]);
 
   const handleSearch = (e) => {
     e.preventDefault();

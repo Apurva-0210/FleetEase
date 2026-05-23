@@ -1,11 +1,12 @@
 import React from 'react';
 import api from '../../utils/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SeatMap from '../../components/SeatMap';
 import { socket } from '../../utils/socket';
 
 export default function AgentTrips(){
   const nav = useNavigate();
+  const location = useLocation();
   const [form, setForm] = React.useState({ customer_name:'', customer_phone:'', route_id:'', schedule_id:'', seats:'', amount:'', payment_method:'cash' });
   const [showQR, setShowQR] = React.useState(false);
   const [cities, setCities] = React.useState({ sources: [], destinations: [] });
@@ -33,7 +34,7 @@ export default function AgentTrips(){
         destinations: Array.isArray(r.data?.destinations)? r.data.destinations : []
       }))
       .catch(()=> setCities({ sources: [], destinations: [] }));
-  },[nav]);
+  },[nav, location]);
 
   // Load schedules when search criteria ready
   React.useEffect(()=>{

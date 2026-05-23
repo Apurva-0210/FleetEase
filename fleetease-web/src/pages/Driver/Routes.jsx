@@ -1,11 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
 
 export default function DriverRoutes(){
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const nav = useNavigate();
+  const location = useLocation();
 
   React.useEffect(()=>{
     const t = localStorage.getItem('token');
@@ -20,7 +21,7 @@ export default function DriverRoutes(){
         setRows([]);
       } finally { setLoading(false); }
     })();
-  },[nav]);
+  },[nav, location]);
 
   return (
     <div className="container py-4">

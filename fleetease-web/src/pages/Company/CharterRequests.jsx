@@ -1,9 +1,10 @@
 import React from 'react';
 import api from '../../utils/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function CompanyCharterRequests(){
   const nav = useNavigate();
+  const location = useLocation();
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -16,7 +17,7 @@ export default function CompanyCharterRequests(){
     let role = null; try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch{}
     if (role !== 'company_admin') { nav('/'); return; }
     refresh();
-  },[nav]);
+  },[nav, location]);
 
   if (loading) return <div className="container py-4">Loading…</div>;
   return (

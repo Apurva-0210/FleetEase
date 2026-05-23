@@ -1,11 +1,12 @@
 import React from 'react';
 import api from '../../utils/api';
 import { GOOGLE_MAPS_API_KEY } from '../../config/env';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from '../../components/Toast';
 
 export default function CompanyCharter(){
   const nav = useNavigate();
+  const location = useLocation();
   const [tripType, setTripType] = React.useState('oneway');
   const [busType, setBusType] = React.useState('2x2');
   const [passengers, setPassengers] = React.useState('40');
