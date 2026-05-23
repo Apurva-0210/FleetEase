@@ -39,7 +39,7 @@ export default function Dashboard(){
     try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     loadSummary();
-  }, [nav, location, loadSummary]);
+  }, [nav, location]);
 
   React.useEffect(()=>{
     if (window.echarts){ setEchartsReady(true); return; }

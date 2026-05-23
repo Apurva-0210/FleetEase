@@ -36,7 +36,7 @@ export default function AdminGallery() {
     try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     load();
-  }, [load, nav, location]);
+  }, [nav, location]);
 
   const onUpload = async (e) => {
     e.preventDefault();

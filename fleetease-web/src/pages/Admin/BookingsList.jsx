@@ -60,7 +60,7 @@ export default function BookingsList(){
     try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     run();
-  }, [nav, location, run]);
+  }, [nav, location]);
 
   const openCancel = (it)=> setModal({ open:true, item: it, working:false, result:null });
   const doCancel = async()=>{

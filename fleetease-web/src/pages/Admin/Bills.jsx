@@ -78,7 +78,7 @@ export default function Bills(){
     let role = null; try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch{}
     if (role !== 'admin') { nav('/'); return; }
     refresh();
-  },[nav, location.pathname, tab, start, end]);
+  },[nav, location]);
 
   const create = async (type, payload)=>{
     await api.post(`/bills/${type}`, payload);

@@ -27,7 +27,7 @@ export default function AdminCorporateApprovals(){
     try { role = t ? JSON.parse(atob(t.split('.')[1]))?.role : null; } catch {}
     if (role !== 'admin') { nav('/'); return; }
     refresh();
-  }, [status, nav, location]);
+  }, [nav, location]);
 
   const approve = async(id, assigned_vehicle_id, admin_notes)=>{
     try{ setModal(m=> ({ ...m, working:true })); await api.put(`/corp-bookings/${id}/approve`, { assigned_vehicle_id, admin_notes }); toast('Approved','success'); setModal({ open:false, item:null, working:false }); refresh(); }
